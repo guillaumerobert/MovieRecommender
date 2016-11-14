@@ -11,7 +11,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.camillepradel.movierecommender.model.Genre;
 import com.camillepradel.movierecommender.model.Movie;
+
 import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 @Controller
 public class MainController {
@@ -33,7 +36,28 @@ public class MainController {
 			@RequestParam(value = "user_id", required = false) Integer userId) {
 		System.out.println("show Movies of user " + userId);
                 
-                 //MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+                // Connection serveur Mongo
+                MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+
+                MongoDatabase db = mongoClient.getDatabase("MongoDB");
+                System.out.println("Connecté a la DB Mongo");
+
+                MongoCollection movielens = db.getCollection("MovieLens");
+                System.out.println("Collection MovieLens selectionnée");
+                
+                
+                
+//                System.out.println(movielens.toString());
+
+//                DBCursor cursor = movielens.find();
+//                int i = 1;
+//
+//                while (cursor.hasNext()) { 
+//                   System.out.println("Recup: "+i); 
+//                   System.out.println(cursor.next()); 
+//                   i++;
+//                }
+			
 
 		// TODO: write query to retrieve all movies from DB or all movies rated by user with id userId,
 		// depending on whether or not a value was given for userId
