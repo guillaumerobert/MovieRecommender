@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.camillepradel.movierecommender.model.Genre;
 import com.camillepradel.movierecommender.model.Movie;
+import com.mongodb.MongoClient;
 
 @Controller
 public class MainController {
@@ -31,6 +32,8 @@ public class MainController {
 	public ModelAndView showMovies(
 			@RequestParam(value = "user_id", required = false) Integer userId) {
 		System.out.println("show Movies of user " + userId);
+                
+                 //MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
 
 		// TODO: write query to retrieve all movies from DB or all movies rated by user with id userId,
 		// depending on whether or not a value was given for userId
