@@ -1,6 +1,5 @@
 package com.camillepradel.movierecommender.controller;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,10 +10,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.camillepradel.movierecommender.model.Genre;
 import com.camillepradel.movierecommender.model.Movie;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 
-import com.mongodb.MongoClient;
+import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Controller
 public class MainController {
@@ -22,7 +26,7 @@ public class MainController {
  
 	@RequestMapping("/hello")
 	public ModelAndView showMessage(
-			@RequestParam(value = "name", required = false, defaultValue = "World") String name) {
+		@RequestParam(value = "name", required = false, defaultValue = "World") String name) {
 		System.out.println("in controller");
  
 		ModelAndView mv = new ModelAndView("helloworld");
@@ -36,7 +40,7 @@ public class MainController {
 			@RequestParam(value = "user_id", required = false) Integer userId) {
 		System.out.println("show Movies of user " + userId);
                 
-                // Connection serveur Mongo
+                // Connection au serveur Mongo (écoute sur port 27017 par défaut, ne pas oublier de demarrer le serveur avant de déployer)
                 MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
 
                 MongoDatabase db = mongoClient.getDatabase("MongoDB");
@@ -45,22 +49,10 @@ public class MainController {
                 MongoCollection movielens = db.getCollection("MovieLens");
                 System.out.println("Collection MovieLens selectionnée");
                 
-                
-                
-//                System.out.println(movielens.toString());
-
-//                DBCursor cursor = movielens.find();
-//                int i = 1;
-//
-//                while (cursor.hasNext()) { 
-//                   System.out.println("Recup: "+i); 
-//                   System.out.println(cursor.next()); 
-//                   i++;
-//                }
-			
-
-		// TODO: write query to retrieve all movies from DB or all movies rated by user with id userId,
-		// depending on whether or not a value was given for userId
+                System.out.println("films dans la collection : "+movielens.count());
+               
+                // TODO: Itérer dans la collection Mongo pour recuperer les films
+                // Si le parametre user_id est fourni dans l'url , recuperer les films de cet utilisateur
 		List<Movie> movies = new LinkedList<Movie>();
 		Genre genre0 = new Genre(0, "genre0");
 		Genre genre1 = new Genre(1, "genre1");
@@ -73,6 +65,6 @@ public class MainController {
 		ModelAndView mv = new ModelAndView("movies");
 		mv.addObject("userId", userId);
 		mv.addObject("movies", movies);
-		return mv;
+		return mv;       		
 	}
 }
