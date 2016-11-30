@@ -14,6 +14,11 @@ public class Movie {
         this.genres = genres;
     }
 
+    public Movie(int mId, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
     public long getId() {
         return this.id;
     }
