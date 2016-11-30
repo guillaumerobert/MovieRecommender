@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Films</title>
 </head>
-<body>
+<body>    
 <h1>
 	<c:choose>
 	    <c:when test="${userId==null}">

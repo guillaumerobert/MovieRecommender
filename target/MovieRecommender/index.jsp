@@ -11,9 +11,10 @@ pageEncoding="ISO-8859-1"%>
  
 	<center>
 		<h2>Movie recommender</h2>
-		<h3>
-			<a href="movies">Aller vers les films</a>
-		</h3>
+		<ul>
+                    <li><a href="movies">Voir les films (de l'utilisateur)</a></li>
+                    <li><a href="moviesRatings">Notes de l'utilisateur</a></li>
+		</ul>
 	</center>
 </body>
 </html>

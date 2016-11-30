@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.camillepradel.movierecommender.model.Genre;
 import com.camillepradel.movierecommender.model.Movie;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -29,14 +30,12 @@ public class MainController {
 	public ModelAndView showMovies(
 			@RequestParam(value = "user_id", required = false) Integer userId) {
 		System.out.println("show Movies of user " + userId);
-                
-               /*
-                NeoController neo = new NeoController();
-                List<Movie> movies = neo.getMovies(userId); // OK WORKS
-                   */
                
+                /*NeoController neo = new NeoController();
+                List<Movie> movies = neo.getMovies(userId);
+               */
                 MongoController mongo = new MongoController();
-                List<Movie> movies = mongo.getMovies();
+                List<Movie> movies = mongo.getMovies(userId);
                 
 		/*Genre genre0 = new Genre(0, "genre0");
 		Genre genre1 = new Genre(1, "genre1");
@@ -50,5 +49,18 @@ public class MainController {
 		mv.addObject("userId", userId);
 		mv.addObject("movies", movies);
 		return mv;       		
+	}
+        
+        @RequestMapping("/moviesratings")
+	public ModelAndView showMoviesRatings(
+			@RequestParam(value = "user_id") Integer userId) {
+		System.out.println("show movies ratings by user " + userId);
+                
+                NeoController neo = new NeoController();
+                Map<Movie, Integer> map = neo.getMoviesRatings(userId);
+		ModelAndView mv = new ModelAndView("ratings");
+		mv.addObject("userId", userId);
+		mv.addObject("map", map);
+		return mv;	
 	}
 }

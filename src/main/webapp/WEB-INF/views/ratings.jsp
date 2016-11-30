@@ -8,24 +8,17 @@
 <h1>
 	<c:choose>
 	    <c:when test="${userId==null}">
-	        Tous les films
+	        Aucune note
 	    </c:when>    
 	    <c:otherwise>
-	        Films de l'utilisateur ${userId}
+	        Notes de l'utilisateur ${userId} pour les films :
 	    </c:otherwise>
 	</c:choose>
 </h1>
 <ul>
-	<c:forEach items="${movies}" var="movie">
+	<c:forEach items="${map}" var="m">
 		<li>
-			${movie.title}
-			<ul>
-				<c:forEach items="${movie.genres}" var="genre">
-					<li>
-						${genre.name}
-					</li>
-				</c:forEach>
-			</ul>
+			${m.key.title} : ${m.value}
 		</li>
 	</c:forEach>
 </ul>

@@ -14,6 +14,7 @@ import com.mongodb.client.MongoDatabase;
 import java.util.LinkedList;
 import java.util.List;
 import org.bson.Document;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -32,23 +33,32 @@ public class MongoController {
         mongoClient = new MongoClient( "localhost" , 27017 );
         db = mongoClient.getDatabase("MovieLens");
         moviesCollection = db.getCollection("movies");
-        System.out.println("films dans la collection : "+moviesCollection.count());
+        System.out.println("films dans la collection : " + moviesCollection.count());
     }
     
-    public List<Movie> getMovies() {
-        
+    public List<Movie> getMovies(
+        @RequestParam(value = "user_id", required = false) Integer userId) {
+                
         // TODO: Itérer dans la collection Mongo pour recuperer les films
         // Si le parametre user_id est fourni dans l'url , recuperer les films de cet utilisateur
         List<Movie> movies = new LinkedList<Movie>();
+        MongoCursor<Document> cursor; 
         
-        /*BasicDBObject searchQuery = new BasicDBObject();
-	searchQuery.put("id", "title");
-	DBCursor cursor = movieLens.find(searchQuery);*/
-        
-        MongoCursor<Document> cursor = moviesCollection.find().iterator();
+        if (userId != null) {
+           /* BasicDBObject searchQuery = new BasicDBObject();
+            
+            searchQuery.put("_id", userId);
+            MongoCursor<Document> cursorUser = db.getCollection("users").find(searchQuery).iterator();
+            Document user = cursorUser.next();*/
+           
+           /* TODO : iterer sur les movies id du user passé en param */
+            cursor = moviesCollection.find().iterator();
+            
+        } else {
+            cursor = moviesCollection.find().iterator();
+        }
 
 	while (cursor.hasNext()) {
-            System.out.println("rentre dans le while ?");
             Document o = cursor.next();
             Integer id = (Integer) o.get("_id") ; 
             String title = (String) o.get("title") ; 
