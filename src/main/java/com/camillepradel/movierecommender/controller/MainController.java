@@ -9,11 +9,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.camillepradel.movierecommender.model.Genre;
 import com.camillepradel.movierecommender.model.Movie;
-import java.util.Map;
+import com.camillepradel.movierecommender.model.Rating;
 
 @Controller
 public class MainController {
 	String message = "Welcome to Spring MVC!";
+        NeoController neo = new NeoController();
  
 	@RequestMapping("/hello")
 	public ModelAndView showMessage(
@@ -31,11 +32,10 @@ public class MainController {
 			@RequestParam(value = "user_id", required = false) Integer userId) {
 		System.out.println("show Movies of user " + userId);
                
-                /*NeoController neo = new NeoController();
                 List<Movie> movies = neo.getMovies(userId);
-               */
-                MongoController mongo = new MongoController();
-                List<Movie> movies = mongo.getMovies(userId);
+               
+                /*MongoController mongo = new MongoController();
+                List<Movie> movies = mongo.getMovies(userId);*/
                 
 		/*Genre genre0 = new Genre(0, "genre0");
 		Genre genre1 = new Genre(1, "genre1");
@@ -57,10 +57,10 @@ public class MainController {
 		System.out.println("show movies ratings by user " + userId);
                 
                 NeoController neo = new NeoController();
-                Map<Movie, Integer> map = neo.getMoviesRatings(userId);
+                List<Rating> ratings = neo.getMoviesRatings(userId);
 		ModelAndView mv = new ModelAndView("ratings");
 		mv.addObject("userId", userId);
-		mv.addObject("map", map);
+		mv.addObject("ratings", ratings);
 		return mv;	
 	}
 }

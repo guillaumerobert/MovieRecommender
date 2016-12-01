@@ -16,9 +16,9 @@
 	</c:choose>
 </h1>
 <ul>
-	<c:forEach items="${map}" var="m">
+	<c:forEach items="${ratings}" var="r">
 		<li>
-			${m.key.title} : ${m.value}
+			${r.movie.title} : ${r.score}
 		</li>
 	</c:forEach>
 </ul>
