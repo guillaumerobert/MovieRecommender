@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.camillepradel.movierecommender.controller;
+package db;
 
 import com.camillepradel.movierecommender.model.Movie;
 import com.mongodb.BasicDBObject;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author sento
  */
-public class MongoController {
+public class MongoMethods implements DBInterface {
     
     private MongoClient mongoClient;
     /*private MongoDatabase db;
@@ -28,7 +28,7 @@ public class MongoController {
     private MongoDatabase db;
     private MongoCollection moviesCollection;
     
-    public MongoController() {
+    public MongoMethods() {
         // Connection au serveur Mongo (écoute sur port 27017 par défaut, ne pas oublier de demarrer le serveur avant de déployer)
         mongoClient = new MongoClient( "localhost" , 27017 );
         db = mongoClient.getDatabase("MovieLens");

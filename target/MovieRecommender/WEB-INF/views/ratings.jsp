@@ -18,7 +18,57 @@
 <ul>
 	<c:forEach items="${ratings}" var="r">
 		<li>
-			${r.movie.title} : ${r.score}
+                    <span>${r.movie.title}</span>
+                    <span>
+                        <form method="POST" action="sendRating.">
+                            
+                            <c:choose>
+                                <c:when test="${r.score==1}">
+                                    <input type="radio" name="score" value="${r.score}" checked>1
+                                    <input type="radio" name="score" value="${r.score}">2
+                                    <input type="radio" name="score" value="${r.score}">3
+                                    <input type="radio" name="score" value="${r.score}">4
+                                    <input type="radio" name="score" value="${r.score}">5
+                                </c:when>
+                                <c:when test="${r.score==2}">
+                                    <input type="radio" name="score" value="${r.score}">1
+                                    <input type="radio" name="score" value="${r.score}" checked>2
+                                    <input type="radio" name="score" value="${r.score}">3
+                                    <input type="radio" name="score" value="${r.score}">4
+                                    <input type="radio" name="score" value="${r.score}">5
+                                </c:when>
+                                <c:when test="${r.score==4}">
+                                    <input type="radio" name="score" value="${r.score}">1
+                                    <input type="radio" name="score" value="${r.score}">2
+                                    <input type="radio" name="score" value="${r.score}" checked>3
+                                    <input type="radio" name="score" value="${r.score}">4
+                                    <input type="radio" name="score" value="${r.score}">5
+                                </c:when>
+                                <c:when test="${r.score==4}">
+                                    <input type="radio" name="score" value="${r.score}">1
+                                    <input type="radio" name="score" value="${r.score}">2
+                                    <input type="radio" name="score" value="${r.score}">3
+                                    <input type="radio" name="score" value="${r.score}" checked>4
+                                    <input type="radio" name="score" value="${r.score}">5
+                                </c:when>
+                                <c:when test="${r.score==5}">
+                                    <input type="radio" name="score" value="${r.score}">1
+                                    <input type="radio" name="score" value="${r.score}">2
+                                    <input type="radio" name="score" value="${r.score}">3
+                                    <input type="radio" name="score" value="${r.score}">4
+                                    <input type="radio" name="score" value="${r.score}" checked>5
+                                </c:when>
+                                <c:otherwise>
+                                    <input type="radio" name="score">1
+                                    <input type="radio" name="score">2
+                                    <input type="radio" name="score">3
+                                    <input type="radio" name="score">4
+                                    <input type="radio" name="score">5
+                                </c:otherwise>
+                            </c:choose>
+                            
+                        </form>
+                    </span>
 		</li>
 	</c:forEach>
 </ul>

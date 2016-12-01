@@ -1,5 +1,6 @@
 package com.camillepradel.movierecommender.controller;
 
+import db.NeoMethods;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,8 @@ import com.camillepradel.movierecommender.model.Rating;
 @Controller
 public class MainController {
 	String message = "Welcome to Spring MVC!";
-        NeoController neo = new NeoController();
+        NeoMethods dbCtrl = new NeoMethods();
+       // MongoController dbCtrl = new MongoController();
  
 	@RequestMapping("/hello")
 	public ModelAndView showMessage(
@@ -32,10 +34,7 @@ public class MainController {
 			@RequestParam(value = "user_id", required = false) Integer userId) {
 		System.out.println("show Movies of user " + userId);
                
-                List<Movie> movies = neo.getMovies(userId);
-               
-                /*MongoController mongo = new MongoController();
-                List<Movie> movies = mongo.getMovies(userId);*/
+                List<Movie> movies = dbCtrl.getMovies(userId);
                 
 		/*Genre genre0 = new Genre(0, "genre0");
 		Genre genre1 = new Genre(1, "genre1");
@@ -53,14 +52,27 @@ public class MainController {
         
         @RequestMapping("/moviesratings")
 	public ModelAndView showMoviesRatings(
-			@RequestParam(value = "user_id") Integer userId) {
+			@RequestParam(value = "user_id", defaultValue = "1") Integer userId) {
 		System.out.println("show movies ratings by user " + userId);
                 
-                NeoController neo = new NeoController();
-                List<Rating> ratings = neo.getMoviesRatings(userId);
+                List<Rating> ratings = dbCtrl.getMoviesRatings(userId);
 		ModelAndView mv = new ModelAndView("ratings");
 		mv.addObject("userId", userId);
 		mv.addObject("ratings", ratings);
 		return mv;	
 	}
+        
+           // @POST ?
+        @RequestMapping("/moviesratings")
+        public void saveOrUpdateRating(
+			@RequestParam(value = "user_id") Integer userId, Integer movieId, Integer note) {
+                System.out.println("update : Note " + userId + " - Movie " + movieId + " - Note " + note);
+                
+                Movie m = dbCtrl.getMovieById(movieId);
+                Rating r = new Rating(m, userId, note);
+                
+                r.setMovieId(movieId);
+              //  dbCtrl.
+            
+        }
 }
