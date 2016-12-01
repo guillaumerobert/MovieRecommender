@@ -7,10 +7,10 @@ package com.camillepradel.movierecommender.controller;
 
 import com.camillepradel.movierecommender.model.Genre;
 import com.camillepradel.movierecommender.model.Movie;
-import java.util.LinkedHashMap;
+import com.camillepradel.movierecommender.model.Rating;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import org.neo4j.driver.v1.*;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -65,10 +65,10 @@ public class NeoController {
      * @param userId
      * @return
      */
-    public Map<Movie, Integer> getMoviesRatings(
+    public List<Rating> getMoviesRatings(
         @RequestParam(value = "user_id") Integer userId) {
         
-        Map<Movie, Integer> moviesRatings = new LinkedHashMap<Movie, Integer>();
+        List<Rating> ratings = new ArrayList<Rating>();
         
         Session session = driver.session();
         StatementResult result = null;
@@ -84,13 +84,13 @@ public class NeoController {
             String titre = record.get("m.title").asString();
             int note = record.get("r.note").asInt();
             
-            moviesRatings.put(new Movie(id, titre), note);
+            ratings.add(new Rating(new Movie(id, titre), userId, note));
         }
 
         session.close();
         driver.close();
         
-        return moviesRatings;
+        return ratings;
     }
     
 }

@@ -15,11 +15,11 @@ public class Movie {
     }
 
     public Movie(int mId, String title) {
-        this.id = id;
+        this.id = mId;
         this.title = title;
     }
 
-    public long getId() {
+    public int getId() {
         return this.id;
     }
 
