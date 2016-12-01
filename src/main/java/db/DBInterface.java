@@ -19,4 +19,5 @@ public interface DBInterface {
      public List<Movie> getMovies(@RequestParam(value = "user_id", required = false) Integer userId);
      public List<Rating> getMoviesRatings(@RequestParam(value = "user_id") Integer userId);
      public Movie getMovieById(@RequestParam(value = "movie_id", required = true) int movieId);
+     public void setRating(@RequestParam(value = "rating", required = true) Rating rating);
 }

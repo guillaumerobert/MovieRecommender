@@ -41,13 +41,14 @@ public class Rating {
         return this.movie.getId();
     }
 
-    public void setMovieId(int movieId) {
+   /* public void setMovieId(int movieId) {
         // TODO: get movie with id movieId from database
         String title = "Titre";
         Genre genre0 = new Genre(0, "genre0");
         Genre genre1 = new Genre(1, "genre1");
+        
         this.movie = new Movie(movieId, title, Arrays.asList(new Genre[] {genre0, genre1}));
-    }
+    }*/
 
     public int getUserId() {
         return this.userId;

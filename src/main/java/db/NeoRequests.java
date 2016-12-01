@@ -8,6 +8,7 @@ package db;
 import com.camillepradel.movierecommender.model.Movie;
 import com.camillepradel.movierecommender.model.Rating;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import org.neo4j.driver.v1.*;
@@ -17,21 +18,22 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author sento
  */
-public class NeoMethods implements DBInterface {
+public class NeoRequests implements DBInterface {
     
-    private Driver driver;
+    private final Driver driver;
     private final AuthToken login;
     
-    public NeoMethods() {
+    public NeoRequests() {
         
         login = AuthTokens.basic( "neo4j", "root" );
+        driver = GraphDatabase.driver( "bolt://localhost", login );
     }
     
     public List<Movie> getMovies(
         @RequestParam(value = "user_id", required = false) Integer userId) {
         
         List<Movie> movies = new LinkedList<Movie>();
-        driver = GraphDatabase.driver( "bolt://localhost", login );
+        
         Session session = driver.session();
         StatementResult result = null;
         
@@ -56,7 +58,6 @@ public class NeoMethods implements DBInterface {
         }
 
         session.close();
-        driver.close();
         
          return movies;
     }
@@ -66,7 +67,6 @@ public class NeoMethods implements DBInterface {
         
         List<Rating> ratings = new ArrayList<Rating>();
         
-        driver = GraphDatabase.driver( "bolt://localhost", login );
         Session session = driver.session();
         StatementResult r1 = null, r2 = null;
         
@@ -104,7 +104,6 @@ public class NeoMethods implements DBInterface {
         }
 
         session.close();
-        driver.close();
         
         return ratings;
     }
@@ -112,7 +111,6 @@ public class NeoMethods implements DBInterface {
     public Movie getMovieById(
         @RequestParam(value = "movie_id", required = true) int movieId) {
         
-        driver = GraphDatabase.driver( "bolt://localhost", login );
         Session session = driver.session();
         StatementResult result = session.run( "MATCH (m:Movie { id: " + movieId + " }) RETURN m.id, m.title" );
         
@@ -120,7 +118,22 @@ public class NeoMethods implements DBInterface {
         int id = record.get("m.id").asInt();
         String titre = record.get("m.title").asString();
         
+        session.close();
+        
         return new Movie(id, titre);
+    }
+
+    public void setRating(@RequestParam(value = "rating", required = true) Rating rating) {
+        
+        Session session = driver.session();
+        int time = (int) (new Date().getTime() / 1000);
+        
+        // on drop puis recrée la relation, qu elle existe ou non
+        
+        session.run( "MATCH (u:User {id:" + rating.getUserId() + "})-[r]->(m:Movie {id:" + rating.getMovieId() + "}) DELETE r" );
+        session.run("MATCH (u:User {id:" + rating.getUserId() + "}), (m:Movie {id:" + rating.getMovieId() + "}) CREATE (u)-[:RATED{note:" + rating.getScore() + ", timestamp:" + time + "}]->(m)");
+        
+        session.close();
     }
 
 }

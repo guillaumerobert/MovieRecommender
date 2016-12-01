@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author sento
  */
-public class MongoMethods implements DBInterface {
+public class MongoRequests implements DBInterface {
     
     private MongoClient mongoClient;
     /*private MongoDatabase db;
@@ -26,7 +26,7 @@ public class MongoMethods implements DBInterface {
     private MongoDatabase db;
     private MongoCollection moviesCollection,usersCollection;
     
-    public MongoMethods() {
+    public MongoRequests() {
         // Connection au serveur Mongo (écoute sur port 27017 par défaut, ne pas oublier de demarrer le serveur avant de déployer)
         mongoClient = new MongoClient( "localhost" , 27017 );
         db = mongoClient.getDatabase("MovieLens");
@@ -122,5 +122,9 @@ public class MongoMethods implements DBInterface {
         Document movie = cursor.next();
         String title = movie.getString("title");
         return new Movie(movieId,title);  
+    }
+
+    public void setRating(Rating rating) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

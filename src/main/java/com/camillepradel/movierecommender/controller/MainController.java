@@ -1,6 +1,6 @@
 package com.camillepradel.movierecommender.controller;
 
-import db.NeoMethods;
+import db.NeoRequests;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -11,12 +11,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.camillepradel.movierecommender.model.Genre;
 import com.camillepradel.movierecommender.model.Movie;
 import com.camillepradel.movierecommender.model.Rating;
-import db.MongoMethods;
+import db.MongoRequests;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class MainController {
 	String message = "Welcome to Spring MVC!";
-        NeoMethods dbCtrl = new NeoMethods();
+        NeoRequests dbCtrl = new NeoRequests();
         //MongoMethods dbCtrl = new MongoMethods();
  
 	@RequestMapping("/hello")
@@ -51,29 +52,29 @@ public class MainController {
 		return mv;       		
 	}
         
-        @RequestMapping("/moviesratings")
+        @RequestMapping(value = "/moviesratings", method = RequestMethod.GET)
 	public ModelAndView showMoviesRatings(
 			@RequestParam(value = "user_id", defaultValue = "1") Integer userId) {
 		System.out.println("show movies ratings by user " + userId);
                 
                 List<Rating> ratings = dbCtrl.getMoviesRatings(userId);
-		ModelAndView mv = new ModelAndView("ratings");
+		ModelAndView mv = new ModelAndView("moviesratings");
 		mv.addObject("userId", userId);
 		mv.addObject("ratings", ratings);
 		return mv;	
 	}
         
-           // @POST ?
-        @RequestMapping("/moviesratingsPost")
+        @RequestMapping(value = "/moviesratings", method = RequestMethod.POST)
         public void saveOrUpdateRating(
 			@RequestParam(value = "user_id") Integer userId, Integer movieId, Integer note) {
                 System.out.println("update : Note " + userId + " - Movie " + movieId + " - Note " + note);
                 
                 Movie m = dbCtrl.getMovieById(movieId);
-                Rating r = new Rating(m, userId, note);
+                if (m != null) {
+                    Rating r = new Rating(m, userId, note);
+                    dbCtrl.setRating(r);
+                }
                 
-                r.setMovieId(movieId);
-              //  dbCtrl.
             
         }
 }
