@@ -1,20 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
- 
-pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Spring 4 MVC - HelloWorld Index Page</title>
-</head>
-<body>
+<%@include file="top.jsp" %>
  
 	<center>
-		<h2>Movie recommender</h2>
-		<ul>
-                    <li><a href="movies">Voir les films (de l'utilisateur)</a></li>
-                    <li><a href="moviesRatings">Notes de l'utilisateur</a></li>
-		</ul>
+		<h2>Bonjour utilisateur 1</h2>
+                </br>
+                <div><a href="movies?user_id=1">Voir la liste de mes films</a></div>
+                <div><a href="moviesratings?user_id=1">Noter mes films</a></div>
+                <div><a href="recommendations?user_id=1&processing_mod=1">Mes films recommandés (V1)</a></div>
+                <div><a href="recommendations?user_id=1&processing_mod=2">Mes films recommandés (V2)</a></div>
+		
 	</center>
-</body>
-</html>
+
+<%@include file="bottom.jsp" %>

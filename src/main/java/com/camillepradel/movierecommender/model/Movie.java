@@ -30,4 +30,9 @@ public class Movie {
     public List<Genre> getGenres() {
         return this.genres;
     }
+    
+    @Override
+    public String toString() {
+        return "Movie : id : " + this.id + ", titre : " + this.title;
+    }
 }

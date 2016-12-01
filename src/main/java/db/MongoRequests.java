@@ -127,4 +127,13 @@ public class MongoRequests implements DBInterface {
     public void setRating(Rating rating) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public List<Rating> ProcessRecommendation1(Integer user_id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<Rating> ProcessRecommendation2(Integer user_id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

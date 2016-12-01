@@ -65,4 +65,9 @@ public class Rating {
     public void setScore(int score) {
             this.score = score;
     }
+    
+    @Override
+    public String toString() {
+        return this.movie.toString() + ", note : " + this.score + ", user : " + this.userId;
+    }
 }

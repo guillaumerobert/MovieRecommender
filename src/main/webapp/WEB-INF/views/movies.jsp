@@ -1,10 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Films</title>
-</head>
-<body>    
+<%@include file="../../top.jsp" %> 
+  
 <h1>
 	<c:choose>
 	    <c:when test="${userId==null}">
@@ -15,9 +10,9 @@
 	    </c:otherwise>
 	</c:choose>
 </h1>
-<ul>
+<ul class="list-group">
 	<c:forEach items="${movies}" var="movie">
-		<li>
+		<li class="list-group-item">
 			${movie.title}
 			<ul>
 				<c:forEach items="${movie.genres}" var="genre">
@@ -29,5 +24,5 @@
 		</li>
 	</c:forEach>
 </ul>
-</body>
-</html>
+                                                
+<%@include file="../../bottom.jsp" %>

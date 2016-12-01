@@ -12,6 +12,7 @@ import com.camillepradel.movierecommender.model.Genre;
 import com.camillepradel.movierecommender.model.Movie;
 import com.camillepradel.movierecommender.model.Rating;
 import db.MongoRequests;
+import java.util.ArrayList;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
@@ -74,7 +75,26 @@ public class MainController {
                     Rating r = new Rating(m, userId, note);
                     dbCtrl.setRating(r);
                 }
-                
-            
         }
+        
+        @RequestMapping(value = "/recommendations", method = RequestMethod.GET)
+        public ModelAndView ProcessRecommendations(
+                @RequestParam(value = "user_id", required = true) Integer userId,
+                @RequestParam(value = "processing_mod", required = false, defaultValue = "1") Integer processing_mod) {
+                 System.out.println("select : UserId " + userId + " - Mode de processing " + processing_mod);
+                 
+            List<Rating> recommendations = new ArrayList<Rating>();
+            
+            switch (processing_mod) {
+                case 1 : recommendations = dbCtrl.ProcessRecommendation1(userId); break;
+                case 2 : recommendations = dbCtrl.ProcessRecommendation2(userId); break;
+                default : recommendations = dbCtrl.ProcessRecommendation1(userId);
+            }
+            
+            ModelAndView mv = new ModelAndView("recommendations");
+            
+            mv.addObject("recommendations", recommendations);
+            return mv;	
+        }
+        
 }

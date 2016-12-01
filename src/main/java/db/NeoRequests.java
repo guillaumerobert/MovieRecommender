@@ -136,4 +136,64 @@ public class NeoRequests implements DBInterface {
         session.close();
     }
 
+    public List<Rating> ProcessRecommendation1(Integer user_id) {
+        
+        Session session = driver.session();
+        List<Rating> ratings = new ArrayList<Rating>();
+        
+        StatementResult result = session.run("MATCH (target_user:User {id : " + user_id + "})-[:RATED]->(m:Movie)<-[:RATED]-(other_user:User)\n" +
+                "WITH other_user, count(distinct m.title) AS num_common_movies, target_user\n" +
+                "ORDER BY num_common_movies DESC\n" +
+                "LIMIT 1\n" +
+                "MATCH (other_user)-[rat_other_user:RATED]->(m2:Movie)\n" +
+                "WHERE NOT ((target_user)-[:RATED]->(m2))\n" +
+                "RETURN m2.id AS mov_id, m2.title AS rec_movie_title, rat_other_user.note AS rating, other_user.id AS watched_by\n" +
+                "ORDER BY rat_other_user.note DESC");
+        
+        while ( result.hasNext() )
+        {
+            Record record = result.next();
+            int idMovie = record.get("mov_id").asInt();
+            String titre = record.get("rec_movie_title").asString();
+            int note = record.get("rating").asInt();
+            
+            ratings.add(new Rating(new Movie(idMovie, titre), user_id, note));
+        }    
+        
+        session.close();
+        
+        return ratings;
+        
+    }
+
+    public List<Rating> ProcessRecommendation2(Integer user_id) {
+        
+        Session session = driver.session();
+        List<Rating> ratings = new ArrayList<Rating>();
+        
+        StatementResult result = session.run("MATCH (target_user:User {id : " + user_id + "})-[:RATED]->(m:Movie)<-[:RATED]-(other_user:User)\n" +
+                "WITH other_user, count(distinct m.title) AS num_common_movies, target_user\n" +
+                "ORDER BY num_common_movies DESC\n" +
+                "LIMIT 5\n" + // changement ici pour prendre les 5 users dans notre algo
+                "MATCH (other_user)-[rat_other_user:RATED]->(m2:Movie)\n" +
+                "WHERE NOT ((target_user)-[:RATED]->(m2))\n" +
+                "RETURN m2.id AS mov_id, m2.title AS rec_movie_title, rat_other_user.note AS rating, other_user.id AS watched_by\n" +
+                "ORDER BY rat_other_user.note DESC");
+        
+        while ( result.hasNext() )
+        {
+            Record record = result.next();
+            int idMovie = record.get("mov_id").asInt();
+            String titre = record.get("rec_movie_title").asString();
+            int note = record.get("rating").asInt();
+            
+            ratings.add(new Rating(new Movie(idMovie, titre), user_id, note));
+        }    
+        
+        session.close();
+        
+        return ratings;
+        
+    }
+
 }

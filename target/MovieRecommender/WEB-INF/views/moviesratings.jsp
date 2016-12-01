@@ -1,23 +1,17 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Films</title>
-</head>
-<body>    
+<%@include file="../../top.jsp" %>
 <h1>
 	<c:choose>
 	    <c:when test="${userId==null}">
 	        Aucune note / TO FIX REDIRECT POST
 	    </c:when> 
 	    <c:otherwise>
-	        Notes de l'utilisateur ${userId} pour les films :
+	        Notes de l'utilisateur ${userId} pour les films
 	    </c:otherwise>
 	</c:choose>
 </h1>
-<ul>
+<ul class="list-group">
 	<c:forEach items="${ratings}" var="r">
-		<li>
+		<li class="list-group-item">
                     <span>${r.movie.title}</span>
                     <span>
                         <form method="POST" action="/MovieRecommender/moviesratings?user_id=${userId}">
@@ -35,5 +29,5 @@
 		</li>
 	</c:forEach>
 </ul>
-</body>
-</html>
+
+<%@include file="../../bottom.jsp" %>

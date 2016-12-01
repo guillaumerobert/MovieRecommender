@@ -20,4 +20,6 @@ public interface DBInterface {
      public List<Rating> getMoviesRatings(@RequestParam(value = "user_id") Integer userId);
      public Movie getMovieById(@RequestParam(value = "movie_id", required = true) int movieId);
      public void setRating(@RequestParam(value = "rating", required = true) Rating rating);
+     public List<Rating> ProcessRecommendation1(@RequestParam(value = "user_id", required = true) Integer user_id);
+     public List<Rating> ProcessRecommendation2(@RequestParam(value = "user_id", required = true) Integer user_id);
 }
