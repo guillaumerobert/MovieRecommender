@@ -11,12 +11,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.camillepradel.movierecommender.model.Genre;
 import com.camillepradel.movierecommender.model.Movie;
 import com.camillepradel.movierecommender.model.Rating;
+import db.MongoMethods;
 
 @Controller
 public class MainController {
 	String message = "Welcome to Spring MVC!";
         NeoMethods dbCtrl = new NeoMethods();
-       // MongoController dbCtrl = new MongoController();
+        //MongoMethods dbCtrl = new MongoMethods();
  
 	@RequestMapping("/hello")
 	public ModelAndView showMessage(
@@ -63,7 +64,7 @@ public class MainController {
 	}
         
            // @POST ?
-        @RequestMapping("/moviesratings")
+        @RequestMapping("/moviesratingsPost")
         public void saveOrUpdateRating(
 			@RequestParam(value = "user_id") Integer userId, Integer movieId, Integer note) {
                 System.out.println("update : Note " + userId + " - Movie " + movieId + " - Note " + note);

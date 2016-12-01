@@ -20,16 +20,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class NeoMethods implements DBInterface {
     
     private Driver driver;
+    private final AuthToken login;
     
     public NeoMethods() {
         
-        driver = GraphDatabase.driver( "bolt://localhost", AuthTokens.basic( "neo4j", "root" ) );
+        login = AuthTokens.basic( "neo4j", "root" );
     }
     
     public List<Movie> getMovies(
         @RequestParam(value = "user_id", required = false) Integer userId) {
         
-        List<Movie> movies = new LinkedList<Movie>();        
+        List<Movie> movies = new LinkedList<Movie>();
+        driver = GraphDatabase.driver( "bolt://localhost", login );
         Session session = driver.session();
         StatementResult result = null;
         
@@ -64,6 +66,7 @@ public class NeoMethods implements DBInterface {
         
         List<Rating> ratings = new ArrayList<Rating>();
         
+        driver = GraphDatabase.driver( "bolt://localhost", login );
         Session session = driver.session();
         StatementResult r1 = null, r2 = null;
         
@@ -109,6 +112,7 @@ public class NeoMethods implements DBInterface {
     public Movie getMovieById(
         @RequestParam(value = "movie_id", required = true) int movieId) {
         
+        driver = GraphDatabase.driver( "bolt://localhost", login );
         Session session = driver.session();
         StatementResult result = session.run( "MATCH (m:Movie { id: " + movieId + " }) RETURN m.id, m.title" );
         
