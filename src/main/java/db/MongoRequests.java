@@ -2,6 +2,7 @@ package db;
 
 import com.camillepradel.movierecommender.model.Movie;
 import com.camillepradel.movierecommender.model.Rating;
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -124,9 +125,23 @@ public class MongoRequests implements DBInterface {
         return new Movie(movieId,title);  
     }
 
-    public void setRating(Rating rating) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void setRating(@RequestParam(value = "rating", required = true) Rating rating) {
+        
+        BasicDBObject query = new BasicDBObject();
+        query.put( "_id", rating.getUserId() );
+
+        BasicDBObject newRatedMovie = new BasicDBObject();
+        newRatedMovie.put("movieid", rating.getMovieId());
+        newRatedMovie.put("rating", rating.getScore());
+        newRatedMovie.put("timestamp", System.currentTimeMillis());
+
+        BasicDBObject update = new BasicDBObject();
+        update.put("$push", new BasicDBObject("movies",newRatedMovie));
+
+        usersCollection.updateOne(query, update);
+
+    }       
+        
 
     public List<Rating> ProcessRecommendation1(Integer user_id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class MainController {
 	String message = "Welcome to Spring MVC!";
-        NeoRequests dbCtrl = new NeoRequests();
-        //MongoMethods dbCtrl = new MongoMethods();
+        //NeoRequests dbCtrl = new NeoRequests();
+        MongoRequests dbCtrl = new MongoRequests();
  
 	@RequestMapping("/hello")
 	public ModelAndView showMessage(
