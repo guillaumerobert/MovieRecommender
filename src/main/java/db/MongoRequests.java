@@ -9,6 +9,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import org.bson.Document;
@@ -144,11 +145,84 @@ public class MongoRequests implements DBInterface {
         
 
     public List<Rating> ProcessRecommendation1(Integer user_id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // On récupére la liste des ids de films notés par l'utilisateur cible 
+        List<Integer> ratedMovies = new ArrayList<Integer>(); 
+        for(Movie m : this.getMovies(user_id) ){
+            ratedMovies.add(m.getId());
+        }
+  
+        MongoCursor<Document> cursor;
+        cursor =  usersCollection.find().iterator();
+        
+       int bestMatching = 0;
+       int bestSimilarUser = 0;
+        
+        while (cursor.hasNext()) {
+            int nbMatchedMovies = 0;
+             
+            Document o = cursor.next();
+            Integer userSimId = (Integer) o.get("_id");
+                        
+            if(!userSimId.equals(user_id) ){
+                List<Movie> userSimRatings = this.getMovies(userSimId);
+                for(Movie m : userSimRatings){
+                    if(ratedMovies.contains(m.getId())){
+                        nbMatchedMovies++;
+                    }
+                }
+                
+                if( nbMatchedMovies >= bestMatching  ){
+                    bestMatching = nbMatchedMovies;
+                    bestSimilarUser = userSimId;
+                }
+            } 
+        } 
+
+        List<Rating> finalResult = new ArrayList<Rating>();
+        List<Movie> ratingsBest = this.getMovies(bestSimilarUser);
+        for(Movie m : ratingsBest ){
+             if(!ratedMovies.contains(m.getId())){
+                 finalResult.add(new Rating(m,0,0));
+             }
+         }
+        
+        return finalResult;
     }
 
     public List<Rating> ProcessRecommendation2(Integer user_id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         // On récupére la liste des ids de films notés par l'utilisateur cible 
+        List<Integer> ratedMovies = new ArrayList<Integer>(); 
+        for(Rating r : this.getMoviesRatings(user_id) ){
+            ratedMovies.add(r.getMovieId());
+        }
+        
+        List<Rating> ratingsReturn = new ArrayList<Rating>();
+        
+        // On va mapper le nombre de films en commum pour chaque utilisateur
+        HashMap<Integer,Integer> ratingMap = new HashMap<Integer,Integer>();
+        
+        MongoCursor<Document> cursor =  usersCollection.find().iterator();
+        
+       //int bestMatching = 0;
+        
+        while (cursor.hasNext()) {
+            int nbMatchedMovies = 0;
+            int userSimId = (Integer)cursor.next().get("_id"); 
+            
+            if(userSimId != user_id ){
+               List<Rating> userSimRatings = this.getMoviesRatings(userSimId);
+               for(Rating r : userSimRatings){
+                   if(ratedMovies.contains(r.getMovieId())){
+                       nbMatchedMovies++;
+                   }
+               }
+               ratingMap.put(userSimId, nbMatchedMovies); 
+            } 
+        }
+        
+        // TODO : Tri HashMap et retour des 5 premiers
+        
+        return null;
     }
-
+    
 }
