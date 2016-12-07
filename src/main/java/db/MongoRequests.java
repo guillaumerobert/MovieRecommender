@@ -143,7 +143,7 @@ public class MongoRequests implements DBInterface {
 
     }       
         
-
+    // Non fonctionnel. N'est pas utilisé dans notre comparaison de performance
     public List<Rating> ProcessRecommendation1(Integer user_id) {
         // On récupére la liste des ids de films notés par l'utilisateur cible 
         List<Integer> ratedMovies = new ArrayList<Integer>(); 
@@ -189,6 +189,7 @@ public class MongoRequests implements DBInterface {
         return finalResult;
     }
 
+    // Non fonctionnel. N'est pas utilisé dans notre comparaison de performance
     public List<Rating> ProcessRecommendation2(Integer user_id) {
          // On récupére la liste des ids de films notés par l'utilisateur cible 
         List<Integer> ratedMovies = new ArrayList<Integer>(); 

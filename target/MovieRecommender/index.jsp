@@ -7,6 +7,8 @@
                 <div><a href="moviesratings?user_id=1">Noter mes films</a></div>
                 <div><a href="recommendations?user_id=1&processing_mod=1">Mes films recommandés (V1)</a></div>
                 <div><a href="recommendations?user_id=1&processing_mod=2">Mes films recommandés (V2)</a></div>
+                <br/>
+                <div><a href="time?nb_get=1">Evaluation de performance</a></div>
 		
 	</center>
 

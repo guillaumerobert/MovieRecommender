@@ -97,4 +97,30 @@ public class MainController {
             return mv;	
         }
         
+        
+        /**
+         * Retourne le temps mis par la DB pour executer nbGet appels à getMoviesRatings
+         * @param nbGet
+         * @return 
+         */
+        @RequestMapping(value = "/time", method = RequestMethod.GET)
+	public ModelAndView getDbResponseTime(@RequestParam(value = "nb_get") Integer nbGet){
+            
+               /* On va récupérer les Ratings pour l'user d'id 1, et ce nbGet fois
+               (choix de l'utilisateur arbitraire) */
+               
+               long startTime = System.currentTimeMillis();
+               for(int i=0;i<nbGet;i++){
+                 dbCtrl.getMoviesRatings(1);  
+               }
+               long endTime = System.currentTimeMillis();
+               
+               long duration = endTime - startTime;
+                
+                ModelAndView mv = new ModelAndView("processtime");
+                mv.addObject("time", duration);
+                mv.addObject("nbget", nbGet);
+                return mv;	
+	}
+        
 }
